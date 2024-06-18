@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Отримуємо шлях до цього скрипта
+# Get the path to this script
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Шлях до виконуючого файлу Blender (потрібно вказати правильний шлях)
+# Path to the Blender executable file ( y o u  m u s t   s p e c i f y   t h e   c o r r e c t   p a t h  ! ! !)
 blender_executable="/usr/bin/blender"
 
-# Ім'я вихідного файлу
+# Output file name
 output_file="$script_dir/merged.obj"
 
-# Створюємо Python-скрипт для об'єднання
+# Create a Python script for merging
 merge_script="$script_dir/merge_objects.py"
 echo "import bpy" > "$merge_script"
 echo "import os" >> "$merge_script"
@@ -23,11 +23,11 @@ echo "bpy.ops.object.select_all(action='SELECT')" >> "$merge_script"
 echo "bpy.ops.object.join()" >> "$merge_script"
 echo "bpy.ops.export_scene.obj(filepath=output_file)" >> "$merge_script"
 
-# Виконуємо Blender з нашим скриптом Python
+# Running Blender with our Python script
 "$blender_executable" -b -P "$merge_script"
 
-# Видаляємо створений скрипт Python
+# Delete the created Python script
 rm "$merge_script"
 
-echo "Об'єднання завершено. Результат збережено у файлі $output_file"
+echo "The merge is complete. The result is saved in the file $output_file"
 
