@@ -2,20 +2,20 @@
 chcp 65001 > nul
 setlocal
 
-REM Отримуємо шлях до папки, де знаходиться цей bat файл
+REM Get the path to the folder where this bat file is located
 set "script_dir=%~dp0"
 
-REM Заміна зворотних слешів на подвійні для правильного оброблення в Python
+REM Replacing backslashes with double slashes for proper handling in Python
 set "escaped_script_dir=%script_dir:\=\\%"
 
-REM Шлях до виконуючого файлу Blender (потрібно вказати правильний шлях)
+REM Path to the Blender executable file ( y o u   m u s t  s p e c i f y  t h e  c o r r e c t  p a t h!!!)
 set "blender_executable=C:\Program Files\Blender\blender.exe"
 
-REM Шлях до скрипта Python та ім'я вихідного файлу
+REM Python script path and output file name
 set "python_script=%script_dir%merge_objects.py"
 set "output_file=%script_dir%merged.obj"
 
-REM Створюємо Python-скрипт для об'єднання
+REM Create a Python script for merging
 echo import bpy > "%python_script%"
 echo import os >> "%python_script%"
 echo import glob >> "%python_script%"
@@ -30,16 +30,16 @@ echo bpy.ops.object.select_all(action='SELECT') >> "%python_script%"
 echo bpy.ops.object.join() >> "%python_script%"
 echo bpy.ops.export_scene.obj(filepath=output_file) >> "%python_script%"
 
-REM Відображаємо вміст створеного Python-скрипта для відлагодження
+REM Display the contents of the generated Python script for debugging
 type "%python_script%"
 
-REM Виконуємо Blender з нашим скриптом Python і зберігаємо логи
+REM Run Blender with our Python script and save the logs
 "%blender_executable%" -b -P "%python_script%" > blender_log.txt 2>&1
 
-REM Видаляємо створений скрипт Python
+REM Delete the created Python script
 del "%python_script%"
 
-echo Об'єднання завершено. Результат збережено у файлі %output_file%
+echo The merge is complete. The result is saved in the file %output_file%
 pause
 
 endlocal
